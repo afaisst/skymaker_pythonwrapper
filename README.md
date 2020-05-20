@@ -57,10 +57,11 @@ python input.py
 ```
 (Note that I am using Python 3.7, I haven't tested the code with other versions of Python.)
 
-The simulation is created using the function
+The simulation is created using the function (main function in "simulate.py")
 ```
 simulate(world_input,image_input)
 ```
+
 
 Note that "image_input" can be a list, for example
 ```
