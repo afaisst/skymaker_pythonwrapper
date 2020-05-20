@@ -52,6 +52,10 @@ Simply clone this repository to your computer.
 ## 2. Usage
 
 To simulate images, modify and run "input.py".
+```
+python input.py
+```
+(Note that I am using Python 3.7, I haven't tested the code with other versions of Python.)
 
 The simulation is created using the function
 ```
