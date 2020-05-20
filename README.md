@@ -100,6 +100,6 @@ Each dictionary must contain the following parameters:
 - fake_HSC: If TRUE, a fake HSC FITS extensions are created. This includes a MASK extension (here just zeros) and a VARIANCE extension (here constant given by the square of "noise_per_pixel"). [True/False]
 - psf_file_name: File name of the PSF (in FITS format) to be used [string]
 
-
+See the file "input.py" for example values.
 
 
