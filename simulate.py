@@ -224,8 +224,9 @@ def create_hsc_mask_header(base_header):
 def simulate(source_input,image_inputs):
 
     ## Create output directory --------------
-    output_directory = os.path.join("../Simulations/" , source_input["base_name"])
+    output_directory = os.path.join(source_input["output_directory"] , source_input["base_name"])
     if not os.path.exists(output_directory):
+        print("Creating output directory: %s" % output_directory)
         sh.mkdir(output_directory)
     else:
         print("Output directory exists")
