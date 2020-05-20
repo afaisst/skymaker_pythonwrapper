@@ -9,7 +9,7 @@ for file in import_file_list:
 
 
 ## Source properties
-source_input = {"base_name":"1sqarcmin", # base simulation name (directory with this name will be created)
+world_input = {"base_name":"1sqarcmin", # base simulation name (directory with this name will be created)
                 "output_directory":"../Simulations/" # Directory in which Simulations are saved (in sub-folder named [base_name])
                 "overwrite_source_catalog":False, # if TRUE, overwrite source catalog and create new one
                 "source_density":100, # sources per arcmin2
@@ -45,6 +45,6 @@ image_input2 = {"image_name":"lr", # name of the image
 
 
 ## Create simulated image
-simulate(source_input=source_input,
+simulate(world_input=world_input,
         image_inputs=[image_input1,image_input2])
 

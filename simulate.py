@@ -221,10 +221,10 @@ def create_hsc_mask_header(base_header):
 ##################################
 
 
-def simulate(source_input,image_inputs):
+def simulate(world_input,image_inputs):
 
     ## Create output directory --------------
-    output_directory = os.path.join(source_input["output_directory"] , source_input["base_name"])
+    output_directory = os.path.join(world_input["output_directory"] , world_input["base_name"])
     if not os.path.exists(output_directory):
         print("Creating output directory: %s" % output_directory)
         sh.mkdir(output_directory)
@@ -243,7 +243,7 @@ def simulate(source_input,image_inputs):
 
     if not os.path.exists(FILES["source_list"]):
         CREATENEWCATALOG = True
-    elif os.path.exists(FILES["source_list"]) & (source_input["overwrite_source_catalog"] == True):
+    elif os.path.exists(FILES["source_list"]) & (world_input["overwrite_source_catalog"] == True):
         CREATENEWCATALOG = True
     else:
         CREATENEWCATALOG = False
@@ -256,35 +256,35 @@ def simulate(source_input,image_inputs):
         print("Creating new source catalog")
 
         ## a) Create galaxy positions
-        GALDATA["nbr_gals"] = int( source_input["source_density"] * source_input["image_size_arcmin"]**2 )
+        GALDATA["nbr_gals"] = int( world_input["source_density"] * world_input["image_size_arcmin"]**2 )
 
-        ras = np.random.uniform(low=source_input["field_center_ra"] - (source_input["image_size_arcmin"]/2./60. - 3/3600),
-                                high=source_input["field_center_ra"] + (source_input["image_size_arcmin"]/2./60. - 3/3600),
+        ras = np.random.uniform(low=world_input["field_center_ra"] - (world_input["image_size_arcmin"]/2./60. - 3/3600),
+                                high=world_input["field_center_ra"] + (world_input["image_size_arcmin"]/2./60. - 3/3600),
                                 size=int(GALDATA["nbr_gals"]))
 
-        decs = np.random.uniform(low= source_input["field_center_dec"] - (source_input["image_size_arcmin"]/2./60. - 3/3600),
-                                high=source_input["field_center_dec"] + (source_input["image_size_arcmin"]/2./60. - 3/3600),
+        decs = np.random.uniform(low= world_input["field_center_dec"] - (world_input["image_size_arcmin"]/2./60. - 3/3600),
+                                high=world_input["field_center_dec"] + (world_input["image_size_arcmin"]/2./60. - 3/3600),
                                 size=int(GALDATA["nbr_gals"]))
 
         ids = np.arange(1,GALDATA["nbr_gals"]+1)
 
         ## b) magnitudes for sources
-        mags = get_mag_distribution(mag_max=source_input["mag"][0],mag_sig=source_input["mag"][1],size=GALDATA["nbr_gals"]) # this generates a half-normal distribution with tail to brigther magnitudes.
+        mags = get_mag_distribution(mag_max=world_input["mag"][0],mag_sig=world_input["mag"][1],size=GALDATA["nbr_gals"]) # this generates a half-normal distribution with tail to brigther magnitudes.
 
         ## c) create structural parameters of sources for SkyMaker
-        BTRs = get_random_uniform(source_input["BTR"],GALDATA["nbr_gals"])
-        R_disks = get_random_uniform(source_input["R_disk"],GALDATA["nbr_gals"])
-        AB_disks = get_random_uniform(source_input["AB_disk"],GALDATA["nbr_gals"])
-        PA_disks = get_random_uniform(source_input["PA_disk"],GALDATA["nbr_gals"])
-        R_bulges = R_disks * get_random_uniform(source_input["R_bulge_rel"],GALDATA["nbr_gals"])
-        AB_bulges = get_random_uniform(source_input["AB_bulge"],GALDATA["nbr_gals"])
+        BTRs = get_random_uniform(world_input["BTR"],GALDATA["nbr_gals"])
+        R_disks = get_random_uniform(world_input["R_disk"],GALDATA["nbr_gals"])
+        AB_disks = get_random_uniform(world_input["AB_disk"],GALDATA["nbr_gals"])
+        PA_disks = get_random_uniform(world_input["PA_disk"],GALDATA["nbr_gals"])
+        R_bulges = R_disks * get_random_uniform(world_input["R_bulge_rel"],GALDATA["nbr_gals"])
+        AB_bulges = get_random_uniform(world_input["AB_bulge"],GALDATA["nbr_gals"])
 
-        if source_input["PA_bulge_rel"][0] > 0: source_input["PA_bulge_rel"][0] = source_input["PA_bulge_rel"]*(-1) # just check...
-        PA_bulges = PA_disks + get_random_uniform(source_input["PA_bulge_rel"],GALDATA["nbr_gals"])
+        if world_input["PA_bulge_rel"][0] > 0: world_input["PA_bulge_rel"][0] = world_input["PA_bulge_rel"]*(-1) # just check...
+        PA_bulges = PA_disks + get_random_uniform(world_input["PA_bulge_rel"],GALDATA["nbr_gals"])
         
         ## d) Turn some sources into stars
         categories = np.repeat(200,GALDATA["nbr_gals"]) # 200 = galaxy
-        npointsource = int(np.floor(source_input["fraction_stars"] * GALDATA["nbr_gals"]))
+        npointsource = int(np.floor(world_input["fraction_stars"] * GALDATA["nbr_gals"]))
         sel_pointsource = np.random.choice(np.arange(0,GALDATA["nbr_gals"]),size=npointsource,replace=False).astype("int")
         categories[sel_pointsource] = 100 # 100 = star
         R_disks[sel_pointsource] = -1
@@ -344,8 +344,8 @@ def simulate(source_input,image_inputs):
         hdu_wcs.header["CD1_2"] = 0
         hdu_wcs.header["CD2_1"] = 0
 
-        hdu_wcs.header["CRVAL1"] = source_input["field_center_ra"] + source_input["image_size_arcmin"]/2/60
-        hdu_wcs.header["CRVAL2"] = source_input["field_center_dec"] - source_input["image_size_arcmin"]/2/60
+        hdu_wcs.header["CRVAL1"] = world_input["field_center_ra"] + world_input["image_size_arcmin"]/2/60
+        hdu_wcs.header["CRVAL2"] = world_input["field_center_dec"] - world_input["image_size_arcmin"]/2/60
 
         hdu_wcs.header["CRPIX1"] = 0
         hdu_wcs.header["CRPIX2"] = 0
@@ -356,8 +356,8 @@ def simulate(source_input,image_inputs):
         hdu_wcs.header["CDELT1"] = 1
         hdu_wcs.header["CDELT2"] = 1
 
-        hdu_wcs.header["NAXIS1"] = int(source_input["image_size_arcmin"]*60/image_input["pixscale"])
-        hdu_wcs.header["NAXIS2"] = int(source_input["image_size_arcmin"]*60/image_input["pixscale"])
+        hdu_wcs.header["NAXIS1"] = int(world_input["image_size_arcmin"]*60/image_input["pixscale"])
+        hdu_wcs.header["NAXIS2"] = int(world_input["image_size_arcmin"]*60/image_input["pixscale"])
 
         hdu_wcs.header["ZP"] = image_input["zp"]
         hdu_wcs.header["PIXSCALE"] = image_input["pixscale"]
@@ -401,7 +401,7 @@ def simulate(source_input,image_inputs):
 
         ## Create the SkyMaker configuration file --------------------
         params = {"IMAGE_NAME":FILES["image_output_%g" % image_id],
-                "IMAGE_SIZE":int(source_input["image_size_arcmin"]*60/image_input["pixscale"]),
+                "IMAGE_SIZE":int(world_input["image_size_arcmin"]*60/image_input["pixscale"]),
                 "IMAGE_TYPE":"SKY",
                 "IMAGE_HEADER":"INTERNAL",
                 "LISTCOORD_TYPE":"PIXEL",
