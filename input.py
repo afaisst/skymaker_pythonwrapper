@@ -16,7 +16,7 @@ world_input = {"base_name":"1sqarcmin", # base simulation name (directory with t
                 "image_size_arcmin":1, # image size in arcmin
                 "field_center_ra":150.0, # field center RA
                 "field_center_dec":2.0, # field center DEC
-                "mag":[26.5,3], # in AB [min,half-normal std]
+                "mag":[26.5,3], # in AB [max,half-normal std]
                 "BTR":[0.2,0.9], # bulge-to-total ratio range
                 "R_disk":[0.1,1], # disk length-scale range in arcsec
                 "AB_disk":[0.1,1], # disk aspect ratio range
