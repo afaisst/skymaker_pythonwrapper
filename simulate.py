@@ -353,8 +353,8 @@ def simulate(world_input,image_inputs):
         hdu_wcs.header["CTYPE1"] = "RA---TAN"
         hdu_wcs.header["CTYPE2"] = "DEC--TAN"
 
-        hdu_wcs.header["CDELT1"] = 1
-        hdu_wcs.header["CDELT2"] = 1
+        hdu_wcs.header["CDELT1"] = (-1)*image_input["pixscale"]/3600# -1.0
+        hdu_wcs.header["CDELT2"] = image_input["pixscale"]/3600#1.0
 
         hdu_wcs.header["NAXIS1"] = int(world_input["image_size_arcmin"]*60/image_input["pixscale"])
         hdu_wcs.header["NAXIS2"] = int(world_input["image_size_arcmin"]*60/image_input["pixscale"])
@@ -421,7 +421,7 @@ def simulate(world_input,image_inputs):
                 "TRACKERROR_MIN":0.0,
                 "TRACKERROR_ANG":0.0,
                 "WAVELENGTH":0.8, # in microns
-                "BACK_MAG":30.0, # background surface brightness (mag/arcsec2)
+                "BACK_MAG":35.0, # background surface brightness (mag/arcsec2) (set to something small)
                 "STARCOUNT_ZP":0,
                 "STARCOUNT_SLOPE":0.2,
                 "MAG_LIMITS":"17.0,26.0",
