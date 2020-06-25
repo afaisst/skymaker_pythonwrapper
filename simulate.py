@@ -222,7 +222,14 @@ def create_hsc_mask_header(base_header):
 
 
 def simulate(world_input,image_inputs):
-
+    '''
+    Simulates an image with SkyMaker using user-specified noise properties.
+    USAGE: simulate(world_input , image_inputs)
+    where
+    - world_input: World dictionary containing information about the sources
+    - image_inputs: List of image dictionaries characterizing the images
+    '''
+    
     ## Create output directory --------------
     output_directory = os.path.join(world_input["output_directory"] , world_input["base_name"])
     if not os.path.exists(output_directory):
