@@ -55,11 +55,13 @@ Simply clone this repository to your computer.
 
 ### a) Creating a new simulated image
 
-To simulate images, modify and run "input_example.py".
+An example is included in the script "input_example.py". Simply run
 ```
 python input_example.py
 ```
 (Note that I am using Python 3.7, I haven't tested the code with other versions of Python.)
+
+
 
 The simulation is created using the function (main function in "simulate.py")
 ```
@@ -121,13 +123,14 @@ The work flow looks something like this:
 - A simulated image is created with zero noise (this image can be stored by setting "delete_noiseless_image" to FALSE (see below).
 - The noiseless image is added to the input image (not that the simulated galaxies/stars will overlap with the real sources on the input image as there is no "avoidance" criteria implemented).
 
-An example input is also included in "input_example.py". Modify and run that script
+An example is included in the script "input_example.py". Simply run
 ```
 python input_example.py
 ```
 (Note that I am using Python 3.7, I haven't tested the code with other versions of Python.)
 
-The add simulated galaxies/stars to an existing image, run
+
+The simulated galaxies/stars are added to an existing image using the function
 ```
 simulate_to_existing(world_input,image_input)
 ```
