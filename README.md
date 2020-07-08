@@ -48,9 +48,9 @@ This should work.
 ### b) Install the Python Wrapper
 
 Simply clone this repository to your computer:
-'''
+```
 git clone https://github.com/afaisst/skymaker_pythonwrapper.git
-'''
+```
 
 
 ## 2. Usage
