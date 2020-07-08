@@ -202,7 +202,7 @@ lr_psf_name_template = "calexp-HSC-I-%s-%s-%s_*_m21.fits" # tract , patch (forma
 
 Also, a wild card ( * ) is added and we use the "glob" package to search for the file we need.
 
-We then simply loop over the list of images to which we want to add the galaxies/stars. Note that we need a new "world" dictionary for each of the images as they cover different area on the sky.
+We then simply loop over the list of images to which we want to add the galaxies/stars. Note that we need a new "world" dictionary for each of the images as they cover different area on the sky. Also, note that we want to add the simulated images to the primary FITS extension for the high-resolution image and the "IMAGE" extension for the low-resolution image.
 Here is the pseudo-code (see "example_variable_psf.py" for the actual code example):
 
 ```
