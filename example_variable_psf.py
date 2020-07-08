@@ -15,44 +15,18 @@ for file in import_file_list:
 
 
 ## Path definitions
-#lr_image_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/grizli-stacks/HSC_corresponding_calexp_oct152019/" #calexp-HSC-I-9813-5_7.fits/"
-#hr_image_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/from_irsa/downloads/" #calexp-HSC-I-9813-5_7-2128_acs_I_mosaic_30mas_sci.fits"
-#lr_psf_path = "/stage/irsa-jointproc-data02/PSFex/allcalexp_psfex_pipeline/output_variableMag/psfs/" #calexp-HSC-I-9813-5_7-9813_2128_m21.fits
-#hr_psf_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/from_irsa/sextractor/psf/" #HSC-I-9813-5_4-2812_psf.fits"
-
-lr_image_path = "./test/"
-hr_image_path = "./test/"
-lr_psf_path = "./test/"
-hr_psf_path = "./test/"
+lr_image_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/grizli-stacks/HSC_corresponding_calexp_oct152019/" #calexp-HSC-I-9813-5_7.fits/"
+hr_image_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/from_irsa/downloads/" #calexp-HSC-I-9813-5_7-2128_acs_I_mosaic_30mas_sci.fits"
+lr_psf_path = "/stage/irsa-jointproc-data02/PSFex/allcalexp_psfex_pipeline/output_variableMag/psfs/" #calexp-HSC-I-9813-5_7-9813_2128_m21.fits
+hr_psf_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/from_irsa/sextractor/psf/" #HSC-I-9813-5_4-2812_psf.fits"
 
 ## List of images to add simulated sources
-#lr_image_list = ["calexp-HSC-I-9812-0_1.fits","calexp-HSC-I-9812-0_2.fits"]
-#hr_image_list = ["calexp-HSC-I-9812-0_1-4546_acs_I_mosaic_30mas_sci.fits","calexp-HSC-I-9812-0_2-4402_acs_I_mosaic_30mas_sci.fits"]
-
-lr_image_list = ["calexp-HSC-I-9812-0_2.fits"]
-hr_image_list = ["calexp-HSC-I-9812-0_2-4402_acs_I_mosaic_30mas_sci.fits"]
-
+lr_image_list = ["calexp-HSC-I-9812-0_1.fits","calexp-HSC-I-9812-0_2.fits"]
+hr_image_list = ["calexp-HSC-I-9812-0_1-4546_acs_I_mosaic_30mas_sci.fits","calexp-HSC-I-9812-0_2-4402_acs_I_mosaic_30mas_sci.fits"]
 
 ## Translation from image to PSF (* is placeholder)
 lr_psf_name_template = "calexp-HSC-I-%s-%s-%s_*_m21.fits" # tract , patch (format x_y), tract
 hr_psf_name_template = "HSC-I-9813-5_4-2812_psf.fits" # just one PSF
-
-
-## World properties (same for all images)
-world_input = {"base_name":"jsp", # base simulation name (directory with this name will be created)
-                "output_directory":"./sim_output", # Directory in which Simulations are saved (in sub-folder named [base_name])
-                "overwrite_source_catalog":False, # if TRUE, overwrite source catalog and create new one
-                "source_density":100, # sources per arcmin2
-                "mag":[26.5,3], # in AB [max,half-normal std]
-                "BTR":[0.2,0.9], # bulge-to-total ratio range
-                "R_disk":[0.1,1], # disk length-scale range in arcsec
-                "AB_disk":[0.1,1], # disk aspect ratio range
-                "PA_disk":[0,180], # disk PA range (deg)
-                "R_bulge_rel":[0.2,0.8], # bulge length scale range (relative to R_disk)
-                "AB_bulge":[0.1,1], # bulge aspect ratio range
-                "PA_bulge_rel":[-20,20], # relative to PA_disk [-deg,+deg] in degrees
-                "fraction_stars":0.3, # fraction of sources that are stars (= point source)
-                }
 
 
 
@@ -67,6 +41,24 @@ if len(lr_image_list) != len(hr_image_list):
 
 for hr_image , lr_image in zip(hr_image_list , lr_image_list):
 
+    ## Get name of simulation. This changes for each patch because different location on sky.
+    simulation_name = "sim_%s" % lr_image.split(".fits")[0]
+
+    ## World properties
+    world_input = {"base_name":simulation_name , # base simulation name (directory with this name will be created)
+                    "output_directory":"./sim_output", # Directory in which Simulations are saved (in sub-folder named [base_name])
+                    "overwrite_source_catalog":False, # if TRUE, overwrite source catalog and create new one
+                    "source_density":100, # sources per arcmin2
+                    "mag":[26.5,3], # in AB [max,half-normal std]
+                    "BTR":[0.2,0.9], # bulge-to-total ratio range
+                    "R_disk":[0.1,1], # disk length-scale range in arcsec
+                    "AB_disk":[0.1,1], # disk aspect ratio range
+                    "PA_disk":[0,180], # disk PA range (deg)
+                    "R_bulge_rel":[0.2,0.8], # bulge length scale range (relative to R_disk)
+                    "AB_bulge":[0.1,1], # bulge aspect ratio range
+                    "PA_bulge_rel":[-20,20], # relative to PA_disk [-deg,+deg] in degrees
+                    "fraction_stars":0.3, # fraction of sources that are stars (= point source)
+                    }
 
 
     # for high-resolution image
