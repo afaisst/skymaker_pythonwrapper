@@ -15,15 +15,23 @@ for file in import_file_list:
 
 
 ## Path definitions
-lr_image_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/grizli-stacks/HSC_corresponding_calexp_oct152019/" #calexp-HSC-I-9813-5_7.fits/"
-hr_image_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/from_irsa/downloads/" #calexp-HSC-I-9813-5_7-2128_acs_I_mosaic_30mas_sci.fits"
-lr_psf_path = "/stage/irsa-jointproc-data02/PSFex/allcalexp_psfex_pipeline/output_variableMag/psfs/" #calexp-HSC-I-9813-5_7-9813_2128_m21.fits
-hr_psf_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/from_irsa/sextractor/psf/" #HSC-I-9813-5_4-2812_psf.fits"
+#lr_image_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/grizli-stacks/HSC_corresponding_calexp_oct152019/" #calexp-HSC-I-9813-5_7.fits/"
+#hr_image_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/from_irsa/downloads/" #calexp-HSC-I-9813-5_7-2128_acs_I_mosaic_30mas_sci.fits"
+#lr_psf_path = "/stage/irsa-jointproc-data02/PSFex/allcalexp_psfex_pipeline/output_variableMag/psfs/" #calexp-HSC-I-9813-5_7-9813_2128_m21.fits
+#hr_psf_path = "/stage/irsa-jointproc-data03/ACS_COSMOS/from_irsa/sextractor/psf/" #HSC-I-9813-5_4-2812_psf.fits"
 
+lr_image_path = "./test/"
+hr_image_path = "./test/"
+lr_psf_path = "./test/"
+hr_psf_path = "./test/"
 
 ## List of images to add simulated sources
-lr_image_list = ["calexp-HSC-I-9812-0_1.fits","calexp-HSC-I-9812-0_2.fits"]
-hr_image_list = ["calexp-HSC-I-9812-0_1-4546_acs_I_mosaic_30mas_sci.fits","calexp-HSC-I-9812-0_2-4402_acs_I_mosaic_30mas_sci.fits"]
+#lr_image_list = ["calexp-HSC-I-9812-0_1.fits","calexp-HSC-I-9812-0_2.fits"]
+#hr_image_list = ["calexp-HSC-I-9812-0_1-4546_acs_I_mosaic_30mas_sci.fits","calexp-HSC-I-9812-0_2-4402_acs_I_mosaic_30mas_sci.fits"]
+
+lr_image_list = ["calexp-HSC-I-9812-0_2.fits"]
+hr_image_list = ["calexp-HSC-I-9812-0_2-4402_acs_I_mosaic_30mas_sci.fits"]
+
 
 ## Translation from image to PSF (* is placeholder)
 lr_psf_name_template = "calexp-HSC-I-%s-%s-%s_*_m21.fits" # tract , patch (format x_y), tract
@@ -62,15 +70,15 @@ for hr_image , lr_image in zip(hr_image_list , lr_image_list):
 
 
     # for high-resolution image
-    hr_psf_file_name = hr_psf_name_template
+    hr_psf_file_name = os.path.join( hr_psf_path , hr_psf_name_template)
     image_input_hr = {"image_name": os.path.join(hr_image_path , hr_image),
                     "zp":25.94734,
-                    "psf_file_name": os.path.join( hr_psf_path , hr_psf_file_name),
+                    "psf_file_name": hr_psf_file_name,
                     "extensions":[0],
                     "delete_noiseless_image":True
                         }
 
-    print(image_input_hr)
+    #print(image_input_hr)
 
     # for low-resolution image
     tract = lr_image.split("-")[3]
@@ -79,14 +87,16 @@ for hr_image , lr_image in zip(hr_image_list , lr_image_list):
     
     image_input_lr = {"image_name": os.path.join(lr_image_path , lr_image),
                     "zp":27.0,
-                    "psf_file_name": os.path.join( lr_psf_path , lr_psf_file_name),
+                    "psf_file_name": lr_psf_file_name,
                     "extensions":["IMAGE"],
-                    "delete_noiseless_image":True
+                    "delete_noiseless_image":False
                         }
 
     print(image_input_lr)
 
 
     # simulate image
+    #simulate_to_existing(world_input=world_input,
+    #    image_inputs=[image_input_hr,image_input_lr])
     simulate_to_existing(world_input=world_input,
-        image_inputs=[image_input_hr,image_input_lr])
+        image_inputs=[image_input_lr])
