@@ -266,7 +266,8 @@ def simulate_to_existing(world_input,image_inputs):
         # open image headers
         image_name_short = image_input["image_name"].split("/")[-1].split(".fits")[0]
         with fits.open(image_input["image_name"]) as hdul:
-            img_hdr = hdul[0].header
+            #img_hdr = hdul[0].header
+            img_hdr = hdul[image_input["extensions"][0]].header # open the first extension that is given by user.
 
         # get WCS
         img_wcs = wcs.WCS(img_hdr)
@@ -386,7 +387,8 @@ def simulate_to_existing(world_input,image_inputs):
         # open image header. This we will keep for now.
         image_name_short = image_input["image_name"].split("/")[-1].split(".fits")[0]
         with fits.open(image_input["image_name"]) as hdul:
-            img_hdr = hdul[0].header
+            #img_hdr = hdul[0].header
+            img_hdr = hdul[image_input["extensions"][0]].header # open the first extension that is given by user.
 
         # get WCS
         img_wcs = wcs.WCS(img_hdr)
@@ -467,13 +469,19 @@ def simulate_to_existing(world_input,image_inputs):
 
         ## Now add this simulated image to the existing image extensions specified by the user.
         with fits.open(image_input["image_name"]) as hdul:
-            hdul_keys = [hh.header["EXTNAME"] for hh in hdul]
+            #hdul_keys = [hh.header["EXTNAME"] for hh in hdul]
 
             for ii,ext in enumerate(image_input["extensions"]):
                 print("processing extension %s: " % str(ext) , end="")
-                if (str(ext) != "0") & (ext not in hdul_keys):
+                #if (str(ext) != "0") & (ext not in hdul_keys):
+                #    print("ERROR: FITS extension %s does not seem to exist. Abort. " % str(ext) , end="")
+                #    print("These extensions exist: " , hdul_keys)
+                #    quit()
+                try:
+                    hdul[ext].data = hdul[ext].data + img_simulated
+                    print(" done!")
+                except:
                     print("ERROR: FITS extension %s does not seem to exist. Abort. " % str(ext) , end="")
-                    print("These extensions exist: " , hdul_keys)
                     quit()
 
                 hdul[ext].data = hdul[ext].data + img_simulated

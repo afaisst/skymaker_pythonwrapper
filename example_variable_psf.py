@@ -26,12 +26,12 @@ lr_image_list = ["calexp-HSC-I-9812-0_1.fits","calexp-HSC-I-9812-0_2.fits"]
 hr_image_list = ["calexp-HSC-I-9812-0_1-4546_acs_I_mosaic_30mas_sci.fits","calexp-HSC-I-9812-0_2-4402_acs_I_mosaic_30mas_sci.fits"]
 
 ## Translation from image to PSF (* is placeholder)
-lr_psf_name_template = "calexp-HSC-I-%s-%s-%s_2128_m21.fits" # tract , patch (format x_y), tract
+lr_psf_name_template = "calexp-HSC-I-%s-%s-%s_*_m21.fits" # tract , patch (format x_y), tract
 hr_psf_name_template = "HSC-I-9813-5_4-2812_psf.fits" # just one PSF
 
 
 ## World properties (same for all images)
-world_input = {"base_name":"sim2, # base simulation name (directory with this name will be created)
+world_input = {"base_name":"jsp", # base simulation name (directory with this name will be created)
                 "output_directory":"./sim_output", # Directory in which Simulations are saved (in sub-folder named [base_name])
                 "overwrite_source_catalog":False, # if TRUE, overwrite source catalog and create new one
                 "source_density":100, # sources per arcmin2
@@ -65,28 +65,28 @@ for hr_image , lr_image in zip(hr_image_list , lr_image_list):
     hr_psf_file_name = hr_psf_name_template
     image_input_hr = {"image_name": os.path.join(hr_image_path , hr_image),
                     "zp":25.94734,
-                    "psf_file_name": os.path.join( hr_psf_name , hr_psf_file_name),
+                    "psf_file_name": os.path.join( hr_psf_path , hr_psf_file_name),
                     "extensions":[0],
-                    "delete_noiselesss_image":True
+                    "delete_noiseless_image":True
                         }
 
     print(image_input_hr)
 
     # for low-resolution image
-    # "calexp-HSC-I-9812-0_1.fits"
     tract = lr_image.split("-")[3]
-    patch = lr_image.split("-")[4]
-    lr_psf_file_name = glob.glob( os.path.join( lr_psf_path , lr_psf_name_template % (str(tract) , patch , str(patch)) ) )[0]
+    patch = lr_image.split("-")[4].split(".fits")[0]
+    lr_psf_file_name = glob.glob( os.path.join( lr_psf_path , lr_psf_name_template % (str(tract) , patch , str(tract)) ) )[0]
+    
     image_input_lr = {"image_name": os.path.join(lr_image_path , lr_image),
                     "zp":27.0,
-                    "psf_file_name": os.path.join( lr_psf_name , lr_psf_file_name),
+                    "psf_file_name": os.path.join( lr_psf_path , lr_psf_file_name),
                     "extensions":["IMAGE"],
-                    "delete_noiselesss_image":True
+                    "delete_noiseless_image":True
                         }
 
-    print(image_input_hr)
+    print(image_input_lr)
 
 
     # simulate image
-    #simulate_to_existing(world_input=world_input,
-    #    image_inputs=[image_input_hr,image_input_lr])
+    simulate_to_existing(world_input=world_input,
+        image_inputs=[image_input_hr,image_input_lr])
