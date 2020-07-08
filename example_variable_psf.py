@@ -70,7 +70,7 @@ for hr_image , lr_image in zip(hr_image_list , lr_image_list):
                     "delete_noiseless_image":True
                         }
 
-    #print(image_input_hr)
+    print(image_input_hr)
 
     # for low-resolution image
     tract = lr_image.split("-")[3]

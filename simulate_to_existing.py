@@ -293,9 +293,9 @@ def simulate_to_existing(world_input,image_inputs):
 
     ## Get global extent of simulated area and size and center
     global_ra_min = np.max(IMAGEPROPERTIES["ra_min"])
-    global_ra_max = np.max(IMAGEPROPERTIES["ra_max"])
+    global_ra_max = np.min(IMAGEPROPERTIES["ra_max"])
     global_dec_min = np.max(IMAGEPROPERTIES["dec_min"])
-    global_dec_max = np.max(IMAGEPROPERTIES["dec_max"])
+    global_dec_max = np.min(IMAGEPROPERTIES["dec_max"])
 
     world_input["field_center_ra"] = np.median([global_ra_min,global_ra_max])
     world_input["field_center_dec"] = np.median([global_dec_min,global_dec_max])
@@ -304,7 +304,10 @@ def simulate_to_existing(world_input,image_inputs):
 
     print(IMAGEPROPERTIES)
 
-
+    print("Global RA min/max: " , global_ra_min , global_ra_max)
+    print("Global DEC min/max:" , global_dec_min , global_dec_max)
+    print("Image size in arcminutes in RA: " , world_input["image_size_ra_arcmin"])
+    print("Image size in arcminutes in DEC: " , world_input["image_size_dec_arcmin"])
 
     ### THE FOLLOWING DOES NOT DEPEND ON THE IMAGE INPUTS ONLY ON EXTENT OF IMAGE ########
 
