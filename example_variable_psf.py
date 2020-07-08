@@ -88,7 +88,6 @@ for hr_image , lr_image in zip(hr_image_list , lr_image_list):
 
 
     # simulate image
-    #simulate_to_existing(world_input=world_input,
-    #    image_inputs=[image_input_hr,image_input_lr])
     simulate_to_existing(world_input=world_input,
-        image_inputs=[image_input_lr])
+        image_inputs=[image_input_hr,image_input_lr])
+    
