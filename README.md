@@ -240,7 +240,6 @@ for hr_image , lr_image in zip(hr_image_list , lr_image_list):
     tract = lr_image.split("-")[3]
     patch = lr_image.split("-")[4].split(".fits")[0]
     lr_psf_file_name = glob.glob( os.path.join( lr_psf_path , lr_psf_name_template % (str(tract) , patch , str(tract)) ) )[0]
-    
     image_input_lr = {"image_name": os.path.join(lr_image_path , lr_image),
                     "zp":27.0,
                     "psf_file_name": lr_psf_file_name,
