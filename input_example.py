@@ -10,7 +10,7 @@ for file in import_file_list:
 
 ##### 1. CREATING A NEW SIMULATED IMAGE FROM SCRATCH ############
 
-## Source properties
+## World properties
 world_input = {"base_name":"sim1", # base simulation name (directory with this name will be created)
                 "output_directory":"./sim_output/", # Directory in which Simulations are saved (in sub-folder named [base_name])
                 "overwrite_source_catalog":False, # if TRUE, overwrite source catalog and create new one
@@ -54,7 +54,7 @@ simulate(world_input=world_input,
 
 ##### 2. ADD SIMULATED STARS/GALAXIES TO AN EXISTING IMAGE ############
 
-## Source properties
+## Word properties
 world_input = {"base_name":"sim2", # base simulation name (directory with this name will be created)
                 "output_directory":"./sim_output", # Directory in which Simulations are saved (in sub-folder named [base_name])
                 "overwrite_source_catalog":False, # if TRUE, overwrite source catalog and create new one
@@ -72,7 +72,6 @@ world_input = {"base_name":"sim2", # base simulation name (directory with this n
 
 ## Image input (Can create multiple images)
 image_input1 = {"image_name":"./example_images/acs_image.fits", # path to the image onto which simulated sources should be added
-                "noise_per_pixel":0.0, # noise per pixel CHANGE THIS LATER INTERNALLY TO 0
                 "zp":25.94734, # zero point AB
                 "psf_file_name":"./example_images/acs_psf.fits", # PSF file name
                 "extensions":[0], # list of extensions to add simulated galaxies. For example [0,"IMAGE"] adds to Primary extension and extension called "IMAGE"
