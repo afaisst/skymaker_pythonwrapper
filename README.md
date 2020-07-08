@@ -188,4 +188,70 @@ Each dictionary must contain the following parameters:
 See the file "input_example.py" for example values.
 
 
+### c) Bonus example: How to add galaxies/stars to images that have different PSFs
+
+The script "example_variable_psf.py" contains a small use case example on how to add simulated galaxies/stars to images with different PSFs.
+In principle, this is a very simple "for-loop", iterating over the images and feeding the correct PSFs.
+
+In this use case, the setup is the following. We have a list of high-resolution (from HST/ACS) and low-resolution (from Hyper Suprime-Cam) images. The PSF for each low-resolution image is different, however, the PSF of the high-resolution images is the same.
+The low-resolution PSFs and images are linked via their file names. So the hardest part is to code the translation from image to PSF file name. For this, we create a PSF template name for the low-resolution image (which is in this case the Hyper Suprime-Cam image for a given tract and patch):
+
+```
+lr_psf_name_template = "calexp-HSC-I-%s-%s-%s_*_m21.fits" # tract , patch (format x_y), tract
+```
+
+Also, a wild card ( * ) is added and we use the "glob" package to search for the file we need.
+
+We then simply loop over the list of images to which we want to add the galaxies/stars. Note that we need a new "world" dictionary for each of the images as they cover different area on the sky.
+Here is the pseudo-code (see "example_variable_psf.py" for the actual code example):
+
+```
+
+hr_image_path = ...
+lr_image_path = ...
+hr_psf_path = ...
+lr_psf_path = ...
+
+lr_psf_name_template = "calexp-HSC-I-%s-%s-%s_*_m21.fits" # tract , patch (format x_y), tract
+hr_psf_name = ...
+
+hr_image_list = [...]
+lr_image_list = [...]
+
+for hr_image , lr_image in zip(hr_image_list , lr_image_list):
+
+    ## Get name of simulation. This changes for each patch because different location on sky.
+    simulation_name = "sim_%s" % lr_image.split(".fits")[0]
+
+    ## World properties
+    world_input = {"base_name":simulation_name , # base simulation name (directory with this name will be created)
+                    ...
+                    }
+
+    # for high-resolution image
+    image_input_hr = {"image_name": os.path.join(hr_image_path , hr_image),
+                    "zp":25.94734,
+                    "psf_file_name": os.path.join(hr_psf_path , hr_psf_name),
+                    "extensions":[0],
+                    "delete_noiseless_image":True
+                        }
+
+    # for low-resolution image
+    tract = lr_image.split("-")[3]
+    patch = lr_image.split("-")[4].split(".fits")[0]
+    lr_psf_file_name = glob.glob( os.path.join( lr_psf_path , lr_psf_name_template % (str(tract) , patch , str(tract)) ) )[0]
+    
+    image_input_lr = {"image_name": os.path.join(lr_image_path , lr_image),
+                    "zp":27.0,
+                    "psf_file_name": lr_psf_file_name,
+                    "extensions":["IMAGE"],
+                    "delete_noiseless_image":True
+                        }
+
+    # simulate image
+    simulate_to_existing(world_input=world_input,
+        image_inputs=[image_input_hr,image_input_lr])
+    
+```
+
 
