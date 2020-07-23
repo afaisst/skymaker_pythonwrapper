@@ -276,7 +276,15 @@ def simulate(world_input,image_inputs):
         ids = np.arange(1,GALDATA["nbr_gals"]+1)
 
         ## b) magnitudes for sources
-        mags = get_mag_distribution(mag_max=world_input["mag"][0],mag_sig=world_input["mag"][1],size=GALDATA["nbr_gals"]) # this generates a half-normal distribution with tail to brigther magnitudes.
+        if world_input["mag_distribution_type"] == "halfnormal":
+            mags = get_mag_distribution(mag_max=world_input["mag"][0],mag_sig=world_input["mag"][1],size=GALDATA["nbr_gals"]) # this generates a half-normal distribution with tail to brigther magnitudes.
+        elif world_input["mag_distribution_type"] == "uniform":
+            mags = np.random.uniform(low=world_input["mag"][0],high=world_input["mag"][1],size=GALDATA["nbr_gals"]) # uniform magnitude distribution
+        else:
+            print("Magnitude distribution type %g not recognized!" % world_input["mag_distribution_type"])
+            quit()
+
+
 
         ## c) create structural parameters of sources for SkyMaker
         BTRs = get_random_uniform(world_input["BTR"],GALDATA["nbr_gals"])
