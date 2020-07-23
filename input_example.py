@@ -60,7 +60,8 @@ world_input = {"base_name":"sim2", # base simulation name (directory with this n
                 "output_directory":"./sim_output", # Directory in which Simulations are saved (in sub-folder named [base_name])
                 "overwrite_source_catalog":False, # if TRUE, overwrite source catalog and create new one
                 "source_density":100, # sources per arcmin2
-                "mag":[26.5,3], # in AB [max,half-normal std]
+                "mag_distribution_type":"halfnormal", # Type of the magnitude distribution: "uniform" or "halfnormal"
+                "mag":[26.5,3], # in AB [max,half-normal std] for type "halfnormal", [min,max] for type "uniform" 
                 "BTR":[0.2,0.9], # bulge-to-total ratio range
                 "R_disk":[0.1,1], # disk length-scale range in arcsec
                 "AB_disk":[0.1,1], # disk aspect ratio range
