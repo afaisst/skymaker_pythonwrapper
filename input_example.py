@@ -18,6 +18,7 @@ world_input = {"base_name":"sim1", # base simulation name (directory with this n
                 "image_size_arcmin":1, # image size in arcmin
                 "field_center_ra":150.0, # field center RA
                 "field_center_dec":2.0, # field center DEC
+                "radec_distribution_type":"grid", # Distribution of galaxies: "random" or "grid"
                 "mag_distribution_type":"halfnormal", # Type of the magnitude distribution: "uniform" or "halfnormal"
                 "mag":[26.5,3], # in AB [max,half-normal std] for type "halfnormal", [min,max] for type "uniform" 
                 "BTR":[0.2,0.9], # bulge-to-total ratio range
@@ -60,6 +61,7 @@ world_input = {"base_name":"sim2", # base simulation name (directory with this n
                 "output_directory":"./sim_output", # Directory in which Simulations are saved (in sub-folder named [base_name])
                 "overwrite_source_catalog":False, # if TRUE, overwrite source catalog and create new one
                 "source_density":100, # sources per arcmin2
+                "radec_distribution_type":"grid", # Distribution of galaxies: "random" or "grid"
                 "mag_distribution_type":"halfnormal", # Type of the magnitude distribution: "uniform" or "halfnormal"
                 "mag":[26.5,3], # in AB [max,half-normal std] for type "halfnormal", [min,max] for type "uniform" 
                 "BTR":[0.2,0.9], # bulge-to-total ratio range

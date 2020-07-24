@@ -265,13 +265,43 @@ def simulate(world_input,image_inputs):
         ## a) Create galaxy positions
         GALDATA["nbr_gals"] = int( world_input["source_density"] * world_input["image_size_arcmin"]**2 )
 
-        ras = np.random.uniform(low=world_input["field_center_ra"] - (world_input["image_size_arcmin"]/2./60. - 3/3600),
-                                high=world_input["field_center_ra"] + (world_input["image_size_arcmin"]/2./60. - 3/3600),
-                                size=int(GALDATA["nbr_gals"]))
+        if world_input["radec_distribution_type"] == "random":
+            ras = np.random.uniform(low=world_input["field_center_ra"] - (world_input["image_size_arcmin"]/2./60. - 3/3600),
+                                    high=world_input["field_center_ra"] + (world_input["image_size_arcmin"]/2./60. - 3/3600),
+                                    size=int(GALDATA["nbr_gals"]))
 
-        decs = np.random.uniform(low= world_input["field_center_dec"] - (world_input["image_size_arcmin"]/2./60. - 3/3600),
-                                high=world_input["field_center_dec"] + (world_input["image_size_arcmin"]/2./60. - 3/3600),
-                                size=int(GALDATA["nbr_gals"]))
+            decs = np.random.uniform(low= world_input["field_center_dec"] - (world_input["image_size_arcmin"]/2./60. - 3/3600),
+                                    high=world_input["field_center_dec"] + (world_input["image_size_arcmin"]/2./60. - 3/3600),
+                                    size=int(GALDATA["nbr_gals"]))
+        elif world_input["radec_distribution_type"] == "grid":
+            
+            # first compute how many rows and columns. Since it's a square, that is easy
+            # else use C = ( -(A-B) \pm np.sqrt( (A-B)**2 + 4 * A * N * B ) ) / (2*A)
+            # and R = N/C
+            # where A = size in RA, B = size in DEC, N = total number of galaxies, R = # galaxies in RA, C = # galaxies in DEC
+            # Derived from equations: 1) (R+1) * x = A, 2) (C+1) * x = B, and 3) R * C = N where x is the distance between the galaxies
+            ngals_ra = np.floor( np.sqrt(GALDATA["nbr_gals"]) )
+            ngals_dec = ngals_ra
+            
+            # now, the sqrt might not give a nice number. Correct this here:
+            GALDATA["nbr_gals"] = int( ngals_ra * ngals_dec)
+            
+            # the create grid
+            ra1 = np.linspace(start = world_input["field_center_ra"] - (world_input["image_size_arcmin"]/2./60. - 3/3600),
+                             stop = world_input["field_center_ra"] + (world_input["image_size_arcmin"]/2./60. - 3/3600),
+                             num = ngals_ra
+                             )
+            dec1 = np.linspace(start =world_input["field_center_dec"] - (world_input["image_size_arcmin"]/2./60. - 3/3600),
+                             stop = world_input["field_center_dec"] + (world_input["image_size_arcmin"]/2./60. - 3/3600),
+                             num = ngals_dec
+                             )
+            radecs = np.asarray(np.meshgrid(ra1,dec1)).reshape(2,-1).T
+            ras = np.asarray([ radec[0] for radec in radecs ])
+            decs = np.asarray([ radec[1] for radec in radecs ])
+            
+        else:
+            print("RA/DEC distribution type not understood. Quit!")
+            quit()
 
         ids = np.arange(1,GALDATA["nbr_gals"]+1)
 

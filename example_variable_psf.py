@@ -49,6 +49,8 @@ for hr_image , lr_image in zip(hr_image_list , lr_image_list):
                     "output_directory":"./sim_output", # Directory in which Simulations are saved (in sub-folder named [base_name])
                     "overwrite_source_catalog":False, # if TRUE, overwrite source catalog and create new one
                     "source_density":100, # sources per arcmin2
+                    "radec_distribution_type":"grid", # Distribution of galaxies: "random" or "grid"
+                    "mag_distribution_type":"halfnormal", # Type of the magnitude distribution: "uniform" or "halfnormal"
                     "mag":[26.5,3], # in AB [max,half-normal std]
                     "BTR":[0.2,0.9], # bulge-to-total ratio range
                     "R_disk":[0.1,1], # disk length-scale range in arcsec
