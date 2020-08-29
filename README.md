@@ -115,9 +115,11 @@ Each dictionary must contain the following parameters:
 - pixscale: pixel scale (arcsec/px) [float]
 - fake_HSC: If TRUE, a fake HSC FITS extensions are created. This includes a MASK extension (here just zeros) and a VARIANCE extension (here constant given by the square of "noise_per_pixel"). [True/False]
 - psf_file_name: File name of the PSF (in FITS format) to be used [string]
+- astro_offset: Astrometry offset in MAS (coords = source_catalog_coords + offset) [ [ra_mean,ra_std],[dec_mean,dec_std]]
 
 See the file "input_example.py" for example values.
 
+Note on astro_offset: This allows the user to add astrometric offsets to the galaxies (e.g., RA_offset = RA + offset). This is simply done by changing the RA/DEC by the offset (requested in milli-arcseconds, mas). The source catalog (sources.csv) contains the original RA/DEC coordinates. In addition, a catalog "sources_[image_name].csv" is created including the same columns as "sources.csv" but in addition the X and Y coordinates (image coordinates), the offsets in RA/DEC as well as the final coordinates (with offset applied).
 
 ### b) Adding simulated galaxies/stars to an existing image
 
@@ -188,6 +190,7 @@ Each dictionary must contain the following parameters:
 - psf_file_name: File name of the PSF (in FITS format) to be used [string]
 - extensions: A list of extensions to which the simulated galaxies/stars are added (for example [0,"IMAGE"] to add them to the primary (0) and "IMAGE" extension. [list]
 - delete_noiseless_image: if FALSE, then the noiseless simulated image is kept, if TRUE, it is deleted.
+- astro_offset: Astrometry offset in MAS (coords = source_catalog_coords + offset) [ [ra_mean,ra_std],[dec_mean,dec_std]]
 
 See the file "input_example.py" for example values.
 
@@ -237,7 +240,8 @@ for hr_image , lr_image in zip(hr_image_list , lr_image_list):
                     "zp":25.94734,
                     "psf_file_name": os.path.join(hr_psf_path , hr_psf_name),
                     "extensions":[0],
-                    "delete_noiseless_image":True
+                    "delete_noiseless_image":True,
+                    "astro_offset":[[0,0],[0,0]]
                         }
 
     # for low-resolution image
@@ -248,7 +252,8 @@ for hr_image , lr_image in zip(hr_image_list , lr_image_list):
                     "zp":27.0,
                     "psf_file_name": lr_psf_file_name,
                     "extensions":["IMAGE"],
-                    "delete_noiseless_image":True
+                    "delete_noiseless_image":True,
+                    "astro_offset":[[0,0],[0,0]]
                         }
 
     # simulate image
