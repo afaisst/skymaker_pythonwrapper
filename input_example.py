@@ -37,14 +37,16 @@ image_input1 = {"image_name":"hr", # name of the image
                 "zp":25.94734, # zero point AB
                 "pixscale":0.03, # pixel scale (arcsec/px)
                 "fake_HSC":False, # Fake HSC mask and other FITS extensions
-                "psf_file_name":"./example_images/acs_psf.fits" # PSF file name
+                "psf_file_name":"./example_images/acs_psf.fits", # PSF file name
+                "astro_offset":[[0,0],[0,0]] # [ [ra_mean,ra_std],[dec_mean,dec_std]] astrometry in MAS offset applied (coords = catalog_coords + offset)
                 }
 image_input2 = {"image_name":"lr", # name of the image
                 "noise_per_pixel":0.02637168, # noise per pixel
                 "zp":27, # zero point AB
                 "pixscale":0.15, # pixel scale (arcsec/px)
                 "fake_HSC":True, # Fake HSC mask and other FITS extensions
-                "psf_file_name":"./example_images/hsc_psf.fits" # PSF file name
+                "psf_file_name":"./example_images/hsc_psf.fits", # PSF file name
+                "astro_offset":[[0,0],[0,0]] # [ [ra_mean,ra_std],[dec_mean,dec_std]] astrometry offset in MAS applied (coords = catalog_coords + offset)
                 }
 
 

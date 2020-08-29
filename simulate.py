@@ -247,6 +247,7 @@ def simulate(world_input,image_inputs):
         FILES["header_file_%g" % image_id] = os.path.join(output_directory,"%s_header.txt" % image_input["image_name"])
         FILES["image_output_%g" % image_id] = os.path.join(output_directory,"%s.fits" % image_input["image_name"])
         FILES["skymaker_config_%g" % image_id] = os.path.join(output_directory,"%s.config" % image_input["image_name"])
+        FILES["source_list_%g" % image_id] = os.path.join(output_directory,"sources_%s.csv" % image_input["image_name"])
 
     if not os.path.exists(FILES["source_list"]):
         CREATENEWCATALOG = True
@@ -418,8 +419,15 @@ def simulate(world_input,image_inputs):
         # save the header information to a file
         save_hdr_to_file(hdr_object=hdu_wcs.header,filename=FILES["header_file_%g" % image_id] )
 
+        # get offsets
+        ra_offsets = np.random.normal(loc=image_input["astro_offset"][0][0] , scale=image_input["astro_offset"][0][1] , size=len(galtab["ra"]))
+        dec_offsets = np.random.normal(loc=image_input["astro_offset"][1][0] , scale=image_input["astro_offset"][1][1] , size=len(galtab["dec"]))
+        ra_finals = galtab["ra"] + ra_offsets
+        dec_finals = galtab["dec"] + dec_offsets
+
         # now convert the RA and DEC to X and Y
-        tmp = [ wcs_sim.all_world2pix([ [galtab["ra"][ii],galtab["dec"][ii]] ] , 0) for ii in range(len(galtab["dec"])) ]
+        #tmp = [ wcs_sim.all_world2pix([ [galtab["ra"][ii],galtab["dec"][ii]] ] , 0) for ii in range(len(galtab["dec"])) ]
+        tmp = [ wcs_sim.all_world2pix([ [ra_finals[ii],dec_finals[ii]] ] , 0) for ii in range(len(galtab["dec"])) ]
         Xs = [tmp[ii][0][0] for ii in range(len(galtab["dec"]))]
         Ys = [tmp[ii][0][1] for ii in range(len(galtab["dec"]))]
 
@@ -443,6 +451,10 @@ def simulate(world_input,image_inputs):
                                     "R_disk":"%4.2f",
                                     "AB_disk":"%4.2f",
                                     "PA_disk":"%4.2f"})
+
+        ## c) Save final catalog including RA and DEC with offset
+        galtab_this_image = hstack( [galtab , Xs , Ys , ra_offsets, dec_offsets, ra_finals , dec_finals] )
+        galtab_this_image.write(FILES["sources_%g" % image_id] , format="csv")
 
         ## Create the SkyMaker configuration file --------------------
         params = {"IMAGE_NAME":FILES["image_output_%g" % image_id],
