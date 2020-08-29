@@ -81,13 +81,15 @@ image_input1 = {"image_name":"./example_images/acs_image.fits", # path to the im
                 "zp":25.94734, # zero point AB
                 "psf_file_name":"./example_images/acs_psf.fits", # PSF file name
                 "extensions":[0], # list of extensions to add simulated galaxies. For example [0,"IMAGE"] adds to Primary extension and extension called "IMAGE"
-                "delete_noiseless_image":True  # set to True to delete the noiseless simulated image
+                "delete_noiseless_image":True,  # set to True to delete the noiseless simulated image
+                "astro_offset":[[0,0],[0,0]] # [ [ra_mean,ra_std],[dec_mean,dec_std]] astrometry in MAS offset applied (coords = catalog_coords + offset)
                 }
 image_input2 = {"image_name":"./example_images/hsc_image.fits", # path to the image onto which simulated sources should be added
                 "zp":27, # zero point AB
                 "psf_file_name":"./example_images/hsc_psf.fits", # PSF file name
                 "extensions":[0,"IMAGE"], # list of extensions to add simulated galaxies. For example [0,"IMAGE"] adds to Primary extension and extension called "IMAGE"
-                "delete_noiseless_image":True  # set to True to delete the noiseless simulated image
+                "delete_noiseless_image":True,  # set to True to delete the noiseless simulated image
+                "astro_offset":[[0,0],[0,0]] # [ [ra_mean,ra_std],[dec_mean,dec_std]] astrometry in MAS offset applied (coords = catalog_coords + offset)
                 }
 
 ## Create simulated image

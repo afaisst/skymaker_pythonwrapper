@@ -441,8 +441,15 @@ def simulate_to_existing(world_input,image_inputs):
 
         ## First create Skymaker image -----------
 
-        # nconvert the RA and DEC to X and Y
-        tmp = [ img_wcs.all_world2pix([ [galtab["ra"][ii],galtab["dec"][ii]] ] , 0) for ii in range(len(galtab["dec"])) ]
+        # get offsets
+        ra_offsets = np.random.normal(loc=image_input["astro_offset"][0][0] , scale=image_input["astro_offset"][0][1] , size=len(galtab["ra"]))
+        dec_offsets = np.random.normal(loc=image_input["astro_offset"][1][0] , scale=image_input["astro_offset"][1][1] , size=len(galtab["dec"]))
+        ra_finals = galtab["ra"] + ra_offsets
+        dec_finals = galtab["dec"] + dec_offsets
+
+        # convert the RA and DEC to X and Y
+        #tmp = [ img_wcs.all_world2pix([ [galtab["ra"][ii],galtab["dec"][ii]] ] , 0) for ii in range(len(galtab["dec"])) ]
+        tmp = [ img_wcs.all_world2pix([ [ra_finals[ii],dec_finals[ii]] ] , 0) for ii in range(len(galtab["dec"])) ]
         Xs = [tmp[ii][0][0] for ii in range(len(galtab["dec"]))]
         Ys = [tmp[ii][0][1] for ii in range(len(galtab["dec"]))]
 
@@ -466,6 +473,12 @@ def simulate_to_existing(world_input,image_inputs):
                                     "R_disk":"%4.2f",
                                     "AB_disk":"%4.2f",
                                     "PA_disk":"%4.2f"})
+
+        ## c) Save final catalog including RA and DEC with offset
+        tab_tmp = Table( [Xs , Ys , ra_offsets, dec_offsets, ra_finals , dec_finals] , names=["X","Y","ra_offset","dec_offset","ra_final","dec_final"])
+        galtab_this_image = hstack( [galtab , tab_tmp] )
+        galtab_this_image.write(FILES["source_list_%g" % image_id] , format="csv" , overwrite=True)
+
 
         ## Create the SkyMaker configuration file --------------------
         params = {"IMAGE_NAME":FILES["image_output_%g" % image_id],

@@ -69,7 +69,8 @@ for hr_image , lr_image in zip(hr_image_list , lr_image_list):
                     "zp":25.94734,
                     "psf_file_name": hr_psf_file_name,
                     "extensions":[0],
-                    "delete_noiseless_image":True
+                    "delete_noiseless_image":True,
+                    "astro_offset":[[0,0],[0,0]]
                         }
 
     print(image_input_hr)
@@ -83,7 +84,8 @@ for hr_image , lr_image in zip(hr_image_list , lr_image_list):
                     "zp":27.0,
                     "psf_file_name": lr_psf_file_name,
                     "extensions":["IMAGE"],
-                    "delete_noiseless_image":False
+                    "delete_noiseless_image":False,
+                    "astro_offset":[[0,0],[0,0]]
                         }
 
     print(image_input_lr)
