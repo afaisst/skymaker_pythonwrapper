@@ -91,6 +91,7 @@ Contains all the information about the sources. The parameters are:
 - image_size_arcmin: image size in arcmin [float]
 - field_center_ra: field center RA (for creating WCS) [float]
 - field_center_dec: field center DEC (for creating WCS) [float]
+- radec_distribution_type:"random", # Distribution of galaxies on simulated sky: "random" or "grid" (evenly spaced)
 - mag_distribution_type: Type of the magnitude distribution: "uniform" or "halfnormal" [string]
 - mag: Magnitude range for objects in AB magnitudes. [max=faintest , half-normal std] for "halfnormal" magnitude distribution and [min=brightest , max=faintest] for "uniform" magnitude distribution [float , float]
 - BTR: bulge-to-total ratio range [min=0 , max=1]
@@ -164,6 +165,7 @@ Contains all the information about the sources. The parameters are:
 - output_directory: Directory in which Simulations are saved (in sub-folder named according to "base_name") [string]
 - overwrite_source_catalog: if TRUE, overwrite source catalog and create new one [True/False]
 - source_density: sources per arcmin2 [float]
+- radec_distribution_type:"random", # Distribution of galaxies on simulated sky: "random" or "grid" (evenly spaced)
 - mag_distribution_type: Type of the magnitude distribution: "uniform" or "halfnormal" [string]
 - mag: Magnitude range for objects in AB magnitudes. [max=faintest , half-normal std] for "halfnormal" magnitude distribution and [min=brightest , max=faintest] for "uniform" magnitude distribution [float , float]
 - BTR: bulge-to-total ratio range [min=0 , max=1]
