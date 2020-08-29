@@ -427,7 +427,7 @@ def simulate(world_input,image_inputs):
 
         # now convert the RA and DEC to X and Y
         #tmp = [ wcs_sim.all_world2pix([ [galtab["ra"][ii],galtab["dec"][ii]] ] , 0) for ii in range(len(galtab["dec"])) ]
-        tmp = [ wcs_sim.all_world2pix([ [ra_finals[ii],dec_finals[ii]] ] , 0) for ii in range(len(galtab["dec"])) ]
+        tmp = [ wcs_sim.all_world2pix([ [ra_finals[ii],dec_finals[ii]] ] , 1) for ii in range(len(galtab["dec"])) ]
         Xs = [tmp[ii][0][0] for ii in range(len(galtab["dec"]))]
         Ys = [tmp[ii][0][1] for ii in range(len(galtab["dec"]))]
 
