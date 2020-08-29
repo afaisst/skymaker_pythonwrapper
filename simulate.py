@@ -454,7 +454,7 @@ def simulate(world_input,image_inputs):
 
         ## c) Save final catalog including RA and DEC with offset
         galtab_this_image = hstack( [galtab , Xs , Ys , ra_offsets, dec_offsets, ra_finals , dec_finals] )
-        galtab_this_image.write(FILES["sources_%g" % image_id] , format="csv")
+        galtab_this_image.write(FILES["source_list_%g" % image_id] , format="csv")
 
         ## Create the SkyMaker configuration file --------------------
         params = {"IMAGE_NAME":FILES["image_output_%g" % image_id],
