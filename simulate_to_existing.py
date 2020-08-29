@@ -444,8 +444,8 @@ def simulate_to_existing(world_input,image_inputs):
         # get offsets
         ra_offsets = np.random.normal(loc=image_input["astro_offset"][0][0] , scale=image_input["astro_offset"][0][1] , size=len(galtab["ra"]))
         dec_offsets = np.random.normal(loc=image_input["astro_offset"][1][0] , scale=image_input["astro_offset"][1][1] , size=len(galtab["dec"]))
-        ra_finals = galtab["ra"] + ra_offsets
-        dec_finals = galtab["dec"] + dec_offsets
+        ra_finals = galtab["ra"] + ra_offsets/1000/3600
+        dec_finals = galtab["dec"] + dec_offsets/1000/3600
 
         # convert the RA and DEC to X and Y
         #tmp = [ img_wcs.all_world2pix([ [galtab["ra"][ii],galtab["dec"][ii]] ] , 0) for ii in range(len(galtab["dec"])) ]
