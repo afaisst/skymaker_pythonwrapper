@@ -250,6 +250,7 @@ def simulate_to_existing(world_input,image_inputs):
         FILES["image_output_%g" % image_id] = os.path.join(output_directory,"%s_sim.fits" % image_name_short)
         FILES["final_image_output_%g" % image_id] = os.path.join(output_directory,"%s_final.fits" % image_name_short)
         FILES["skymaker_config_%g" % image_id] = os.path.join(output_directory,"%s.config" % image_name_short)
+        FILES["source_list_%g" % image_id] = os.path.join(output_directory,"sources_%s.csv" % image_name_short)
 
     if not os.path.exists(FILES["source_list"]):
         CREATENEWCATALOG = True
@@ -315,6 +316,9 @@ def simulate_to_existing(world_input,image_inputs):
     GALDATA = dict()
     if CREATENEWCATALOG: # create new source catalog
         print("Creating new source catalog")
+
+        ## a) Create galaxy positions
+        GALDATA["nbr_gals"] = int( world_input["source_density"] * world_input["image_size_ra_arcmin"]* world_input["image_size_dec_arcmin"] )
 
         if world_input["radec_distribution_type"] == "random":
             ras = np.random.uniform(low=world_input["field_center_ra"] - (world_input["image_size_ra_arcmin"]/2./60. - 3/3600),
