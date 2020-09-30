@@ -351,11 +351,11 @@ def simulate_to_existing(world_input,image_inputs):
             # the create grid
             ra1 = np.linspace(start = world_input["field_center_ra"] - (world_input["image_size_ra_arcmin"]/2./60. - 3/3600),
                              stop = world_input["field_center_ra"] + (world_input["image_size_ra_arcmin"]/2./60. - 3/3600),
-                             num = ngals_ra
+                             num = int( ngals_ra )
                              )
             dec1 = np.linspace(start = world_input["field_center_dec"] - (world_input["image_size_dec_arcmin"]/2./60. - 3/3600),
                              stop = world_input["field_center_dec"] + (world_input["image_size_dec_arcmin"]/2./60. - 3/3600),
-                             num = ngals_dec
+                             num = int( ngals_dec)
                              )
             radecs = np.asarray(np.meshgrid(ra1,dec1)).reshape(2,-1).T
             ras = np.asarray([ radec[0] for radec in radecs ])

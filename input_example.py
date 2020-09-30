@@ -2,9 +2,12 @@
 
 
 ######## IMPORT ###########
-import_file_list = ["simulate.py","simulate_to_existing.py"]
-for file in import_file_list:
-    exec(compile(open(file, "rb").read(), file, 'exec'))
+import sys
+sys.path.append('.')
+
+from simulate import *
+from simulate_to_existing import *
+
 #############################
 
 
@@ -53,7 +56,6 @@ image_input2 = {"image_name":"lr", # name of the image
 ## Create simulated image
 simulate(world_input=world_input,
         image_inputs=[image_input1,image_input2])
-
 
 
 ##### 2. ADD SIMULATED STARS/GALAXIES TO AN EXISTING IMAGE ############
